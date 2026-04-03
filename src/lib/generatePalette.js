@@ -1,15 +1,10 @@
-
-
 const BASE_URL = "https://integrate.api.nvidia.com/v1";
 const API_KEY = import.meta.env.VITE_NVIDIA_API_KEY;
 
 export async function generatePalettes(prompt, count = 6) {
-  const response = await fetch(`${BASE_URL}/chat/completions`, {
+  const response = await fetch("/api/generate", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${API_KEY}`,
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       model: "meta/llama-3.1-8b-instruct",
       messages: [
@@ -35,22 +30,21 @@ Rules:
   });
 
   if (!response.ok) throw new Error(`API error: ${response.status}`);
-  
-const data = await response.json();
-let text = data.choices[0].message.content
-  .replace(/```json|```/g, "")
-  .trim();
 
-const start = text.indexOf("[");
-const end = text.lastIndexOf("]");
-if (start !== -1 && end !== -1) text = text.slice(start, end + 1);
+  const data = await response.json();
+  let text = data.choices[0].message.content
+    .replace(/```json|```/g, "")
+    .trim();
 
+  const start = text.indexOf("[");
+  const end = text.lastIndexOf("]");
+  if (start !== -1 && end !== -1) text = text.slice(start, end + 1);
 
   text = text
-  .replace(/,\s*]/g, "]")       // trailing commas in arrays
-  .replace(/,\s*}/g, "}")       // trailing commas in objects
-  .replace(/(['"])?([a-z0-9_]+)(['"])?:/gi, '"$2":') // unquoted keys
-  .replace(/:\s*'([^']*)'/g, ': "$1"');              // single quoted values
+    .replace(/,\s*]/g, "]")
+    .replace(/,\s*}/g, "}")
+    .replace(/(['"])?([a-z0-9_]+)(['"])?:/gi, '"$2":')
+    .replace(/:\s*'([^']*)'/g, ': "$1"');
 
-return JSON.parse(text);
+  return JSON.parse(text);
 }
