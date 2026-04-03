@@ -1,6 +1,9 @@
 const API_KEY = import.meta.env.VITE_NVIDIA_API_KEY;
 const BASE_URL = "/api/nvidia/v1";
 
+const BASE_URL = "https://integrate.api.nvidia.com/v1";
+const API_KEY = import.meta.env.VITE_NVIDIA_API_KEY;
+
 export async function generatePalettes(prompt, count = 6) {
   const response = await fetch(`${BASE_URL}/chat/completions`, {
     method: "POST",
@@ -33,7 +36,7 @@ Rules:
   });
 
   if (!response.ok) throw new Error(`API error: ${response.status}`);
-
+  
 const data = await response.json();
 let text = data.choices[0].message.content
   .replace(/```json|```/g, "")
