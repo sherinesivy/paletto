@@ -28,7 +28,7 @@ Rules:
         },
       ],
       temperature: 0.9,
-      max_tokens: 800,
+      max_tokens: 1500,
     }),
   });
 

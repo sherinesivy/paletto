@@ -302,3 +302,72 @@
   border-radius: 50%;
   background: #4ade80;
 }
+
+.sidebar-close {
+  display: none; /* hidden on desktop */
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    z-index: 100;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-area.sidebar-open {
+    margin-left: 0 !important;
+  }
+
+  /* Fix hamburger button alignment */
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    flex-shrink: 0; /* don't let it squish */
+  }
+
+  /* Hide the hamburger when sidebar is open — X is redundant/overlapping */
+  .sidebar.open ~ .main-area .menu-toggle,
+  .main-area.sidebar-open .menu-toggle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Ensure navbar doesn't let items overlap */
+  .navbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden; /* prevent icon bleeding over logo */
+  }
+  .menu-toggle.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sidebar-logo {
+    padding-top: 35px; /* or however wide your hamburger is */
+  }
+
+  .logo-text {
+    padding-top: 3px;
+  }
+}
