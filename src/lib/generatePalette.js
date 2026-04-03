@@ -1,5 +1,4 @@
-const API_KEY = import.meta.env.VITE_NVIDIA_API_KEY;
-const BASE_URL = "/api/nvidia/v1";
+
 
 const BASE_URL = "https://integrate.api.nvidia.com/v1";
 const API_KEY = import.meta.env.VITE_NVIDIA_API_KEY;
