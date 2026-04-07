@@ -46,5 +46,19 @@ Rules:
     .replace(/(['"])?([a-z0-9_]+)(['"])?:/gi, '"$2":')
     .replace(/:\s*'([^']*)'/g, ': "$1"');
 
-  return JSON.parse(text);
+   try {
+    return JSON.parse(text);
+  } catch (e) {
+    // try to salvage incomplete JSON by cutting off at last complete object
+    const lastBrace = text.lastIndexOf("}");
+    if (lastBrace !== -1) {
+      text = text.slice(0, lastBrace + 1) + "]";
+      try {
+        return JSON.parse(text);
+      } catch (e2) {
+        throw new Error("Failed to parse palette response");
+      }
+    }
+    throw new Error("Failed to parse palette response");
+  }
 }
